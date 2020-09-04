@@ -1,0 +1,97 @@
+swagger: "2.0"
+info:
+  description: This is the swagger file that goes with our server code
+  version: "1.0.0"
+  title: Swagger REST Article
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+basePath: "/api"
+
+# Paths supported by the server application
+paths:
+  /clue:
+    get:
+      operationId: "handler.clue.read_all"
+      tags:
+        - "Clue"
+      summary: "The crossword answer data structure supported by the server application"
+      description: "Read the list of crossword clues"
+      responses:
+        200:
+          description: "Successful read answer list operation"
+          schema:
+            type: "array"
+            items:
+              properties:
+                clue:
+                  type: "string"
+                date:
+                  type: "string"
+                source:
+                  type: "string"
+  /answer:
+    get:
+      operationId: "handler.answer.read_all"
+      tags:
+        - "Answer"
+      summary: "The crossword answer data structure supported by the server application"
+      description: "Read the list of crossword answers"
+      responses:
+        200:
+          description: "Successful read answer list operation"
+          schema:
+            type: "array"
+            items:
+              properties:
+                answer:
+                  type: string
+                answer_id:
+                  type: integer
+                clue:
+                  clue:
+                    type: string
+                  clue_id:
+                    type: "string"
+                  date:
+                    type: "string"
+                  source:
+                    type: "string"
+  /answer/{answer_id}:
+    get:
+      operationId: "handler.answer.read_one"
+      tags:
+        - "Answer"
+      summary: "The crossword answer data structure supported by the server application"
+      description: "Read the list of crossword answers"
+      parameters:
+        - name: answer_id
+          in: path
+          description: Id of the person to get
+          type: integer
+          required: True
+      responses:
+        200:
+          description: "Successful read answer list operation"
+          schema:
+            type: "object"
+            items:
+              properties:
+                source:
+                  type: "string"
+                clue:
+                  type: "array"
+                  items:
+                    properties:
+                      clue_id:
+                        type: "integer"
+                      answer_id:
+                        type: "integer"
+                      clue:
+                        type: "string"
+                      date:
+                        type: "string"
+                      source:
+                        type: "string"

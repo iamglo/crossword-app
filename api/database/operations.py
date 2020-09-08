@@ -32,7 +32,7 @@ def insert_to_db(conn, data):
     :return:
     """
     answer_sql = """INSERT OR IGNORE INTO answers(answer) VALUES(?)"""
-    clue_sql = """INSERT INTO clues(clue, date, source) VALUES(?, ?, "NYT")"""
+    clue_sql = """INSERT INTO clues(clue, date, source, day_of_week) VALUES(?, ?, "NYT", ?)"""
     mapping_sql = """INSERT INTO mapping(answer_id, clue_id) VALUES(?, ?)"""
     get_answer_id_sql = """SELECT answer_id FROM answers WHERE "answer" = ? """
     

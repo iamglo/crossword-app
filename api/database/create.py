@@ -20,7 +20,8 @@ sql_create_clues_table = """CREATE TABLE IF NOT EXISTS clues (
 clue_id integer PRIMARY KEY,
 date text NOT NULL,
 clue text NOT NULL,
-source text NOT NULL
+source text NOT NULL,
+day_of_week text NOT NULL
 );"""
 
 
@@ -33,7 +34,7 @@ dbop.create_table(conn, sql_create_mapping_table)
 dbop.create_table(conn, sql_create_clues_table)
 
 cw_data = pd.read_csv(data)
-cw_data = cw_data.iloc[:200, 2:-1]
+cw_data = cw_data.iloc[:200, 2:]
 cw_data = cw_data[~cw_data['answer'].isna()]
 
 dbop.insert_to_db(conn, cw_data)

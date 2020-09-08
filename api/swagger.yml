@@ -14,14 +14,23 @@ basePath: "/api"
 paths:
   /clue:
     get:
-      operationId: "handler.clue.read_all"
+      operationId: "handler.clue.read"
       tags:
         - "Clue"
       summary: "The crossword answer data structure supported by the server application"
       description: "Read the list of crossword clues"
+      parameters:
+        - name: clue_id
+          in: query
+          description: Id of the person to get
+          type: integer
+        - name: date
+          in: query
+          description: Date
+          type: string
       responses:
         200:
-          description: "Successful read answer list operation"
+          description: "Successful read clue list operation"
           schema:
             type: "array"
             items:
@@ -32,13 +41,59 @@ paths:
                   type: "string"
                 source:
                   type: "string"
+                answer:
+                  type: array
+  /clue/{keyword}:
+      get:
+        operationId: "handler.clue.search_clue"
+        tags:
+          - "Clue Search"
+        summary: "The crossword answer data structure supported by the server application"
+        description: "Read the list of crossword clues"
+        parameters:
+          - name: keyword
+            in: path
+            description: word to search for
+            type: string
+            required: True
+        responses:
+          200:
+            description: "Successful searched clue list operation"
+            schema:
+              type: "array"
+              items:
+                properties:
+                  clue:
+                    type: "string"
+                  date:
+                    type: "string"
+                  source:
+                    type: "string"
+                  answer:
+                    type: array
   /answer:
     get:
-      operationId: "handler.answer.read_all"
+      operationId: "handler.answer.read"
       tags:
         - "Answer"
       summary: "The crossword answer data structure supported by the server application"
       description: "Read the list of crossword answers"
+      parameters:
+        - in: query
+          name: answer_id
+          description: Id of the person to get
+          required: False
+          type: string
+        - in: query
+          name: date
+          description: Date
+          type: string
+          required: False
+        - in: query
+          name: year
+          description: Year
+          type: string
+          required: False
       responses:
         200:
           description: "Successful read answer list operation"
@@ -51,30 +106,33 @@ paths:
                 answer_id:
                   type: integer
                 clue:
-                  clue:
-                    type: string
-                  clue_id:
-                    type: "string"
-                  date:
-                    type: "string"
-                  source:
-                    type: "string"
-  /answer/{answer_id}:
+                  type: "array"
+                  items:
+                    properties:
+                      clue:
+                        type: string
+                      clue_id:
+                        type: "string"
+                      date:
+                        type: "string"
+                      source:
+                        type: "string"
+  /answer/{keyword}:
     get:
-      operationId: "handler.answer.read_one"
+      operationId: "handler.answer.search_answer"
       tags:
         - "Answer"
       summary: "The crossword answer data structure supported by the server application"
       description: "Read the list of crossword answers"
       parameters:
-        - name: answer_id
+        - name: keyword
           in: path
-          description: Id of the person to get
-          type: integer
+          description: word to search for
+          type: string
           required: True
       responses:
         200:
-          description: "Successful read answer list operation"
+          description: "Successful one answer based on id"
           schema:
             type: "object"
             items:
@@ -86,8 +144,6 @@ paths:
                   items:
                     properties:
                       clue_id:
-                        type: "integer"
-                      answer_id:
                         type: "integer"
                       clue:
                         type: "string"

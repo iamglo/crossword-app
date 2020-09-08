@@ -8,8 +8,6 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 
 from database.config import db, ma
-# from models.clue_model import Clue
-
 
 class Clue(db.Model):
     __tablename__ = 'clues'
@@ -18,6 +16,7 @@ class Clue(db.Model):
     clue = db.Column(db.String(32))
     date = db.Column(db.String(32))
     source = db.Column(db.String(32))
+    day_of_week = db.Column(db.String(32))
 
     answer = db.relationship(
         "Answer",
@@ -54,7 +53,6 @@ class MappingDetailSchema(ma.SQLAlchemyAutoSchema):
 
 class AnswerClueSchema(ma.SQLAlchemyAutoSchema):
     clue_id = fields.Int()
-    answer_id = fields.Int()
     clue = fields.Str()
     date = fields.Str()
     source = fields.Str()

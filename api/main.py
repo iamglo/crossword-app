@@ -1,15 +1,18 @@
 """
 API Calls
-/source/clue/*keyword => {*clue: {answer: *answer, date: *date}}
-/source/answer/*answer => {*clue: {date: *date}}
+/api/clue/
+    *keyword => {*clue: {answer: *answer, date: *date}}
+    *id
 
-/source/all
-/source/date/*date => answer:clue
-/source/date/month/*number
-/source/date/year/*number
+/api/answer/
+    *keyword => {*clue: {date: *date}}
+    *id
+
+/api/crossword/
+    *date => {answer:clue}
+    *source => source
 """
 
-import flask
 import connexion
 from flask import request, jsonify, render_template
 

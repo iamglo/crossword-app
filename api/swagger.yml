@@ -28,6 +28,14 @@ paths:
           in: query
           description: Date
           type: string
+        - name: year
+          in: query
+          description: Year
+          type: string
+        - name: day
+          in: query
+          description: Day of week
+          type: string
       responses:
         200:
           description: "Successful read clue list operation"
@@ -43,7 +51,7 @@ paths:
                   type: "string"
                 answer:
                   type: array
-  /clue/{keyword}:
+  /clue/search/{keyword}:
       get:
         operationId: "handler.clue.search_clue"
         tags:
@@ -71,27 +79,22 @@ paths:
                     type: "string"
                   answer:
                     type: array
-  /answer:
+  /answer/all:
     get:
-      operationId: "handler.answer.read"
+      operationId: "handler.answer.read_all"
       tags:
         - "Answer"
       summary: "The crossword answer data structure supported by the server application"
       description: "Read the list of crossword answers"
       parameters:
         - in: query
-          name: answer_id
+          name: size
           description: Id of the person to get
           required: False
           type: string
         - in: query
-          name: date
+          name: page
           description: Date
-          type: string
-          required: False
-        - in: query
-          name: year
-          description: Year
           type: string
           required: False
       responses:
@@ -117,7 +120,7 @@ paths:
                         type: "string"
                       source:
                         type: "string"
-  /answer/{keyword}:
+  /answer/search/{keyword}:
     get:
       operationId: "handler.answer.search_answer"
       tags:

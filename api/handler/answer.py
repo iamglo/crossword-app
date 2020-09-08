@@ -17,22 +17,23 @@ from models.models import (
     Clue
 )
 
-def read():
+def read_all():
     """
-    Request response for /api/answers
+    Request response for /api/answers/all
     :return: json of answers
     """
-    id_filt = [int(x) for x in request.args.getlist("id")]
+    page_size = request.args.get("size") or 100
+    page_num = request.args.get("page") or 1
+
+    if page_num <= 0 or page_size > 500:
+        abort(400, f'Please check if request is valid')
+
     # error exceptions for other arguments
 
-    if len(id_filt) > 0:
-        answer = Answer.query \
-        .filter(Answer.answer_id.in_(id_filt))
-    else:
-        answer = Answer.query
+    answer = Answer.query.paginate(int(page_num), int(page_size)).items
 
     answer_schema = AnswerSchema(many=True)
-    return answer_schema.dump(answer.all())
+    return answer_schema.dump(answer)
 
 def search_answer(keyword):
     """

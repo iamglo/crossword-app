@@ -37,7 +37,7 @@ if __name__ == "__main__":
             compiled_answers = compiled_answers.append(parsed_df)
         except Exception as e:
             print("Encountered error", e, " for ", dt, " Saving and exiting....")
-            compiled_answers["day_of_week"] = compiled_answers["date"].apply(lambda x: datetime.strptime(x, "%m%d%Y").weekday())
+            compiled_answers["day_of_week"] = compiled_answers["date"].apply(lambda x: datetime.strptime(str(x), "%m%d%Y").weekday())
             compiled_answers.to_csv(r'scraper_data/page_data.csv')
             exit()
 

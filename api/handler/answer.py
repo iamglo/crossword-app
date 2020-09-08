@@ -34,21 +34,6 @@ def read():
     answer_schema = AnswerSchema(many=True)
     return answer_schema.dump(answer.all())
 
-# def read_one(answer_id):
-#     """
-#     Request response for /api/answers/{answer_id}
-#     :return: json of answers
-#     """
-#     answer = Answer.query \
-#             .filter(Answer.answer_id == answer_id) \
-#             .one_or_none()
-#
-#     if answer is not None:
-#         answer_schema = AnswerSchema()
-#         return answer_schema.dump(answer)
-#     else:
-#         abort(404, f'Answer not found for ID: {answer_id}')
-
 def search_answer(keyword):
     """
     Request response for /api/answer/{keyword}

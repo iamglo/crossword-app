@@ -47,21 +47,6 @@ def read():
     clue_schema = ClueSchema(many=True)
     return clue_schema.dump(clue.all())
 
-# def read_one(clue_id):
-#     """
-#     Request response for /api/clue/{clue_id}
-#     :return: json of answers
-#     """
-#     answer = Clue.query \
-#             .filter(Clue.clue_id == clue_id) \
-#             .one_or_none()
-#
-#     if answer is not None:
-#         clue_schema = ClueSchema(many=True)
-#         return clue_schema.dump(answer)
-#     else:
-#         abort(404, f'Answer not found for ID: {clue_id}')
-
 def search_clue(keyword):
     """
     Request response for /api/clue/{keyword}

@@ -57,10 +57,13 @@ def search_answer(keyword):
 def search_answer_fts(keyword):
     """"""
     search_parse = 'answer: *' + " ".join(keyword.split("+")) + "*"
-    search = db.engine.execute("SELECT * FROM v_answers WHERE v_answers MATCH ?", (search_parse,)).fetchall()
+    search = db.session.query(VirtualAnswer.answer_id).filter(VirtualAnswer.answer.match(search_parse)).subquery()
+    search_full = Answer.query.filter(Answer.answer_id.in_(search)).all()
 
     if search is not None:
-        answer_schema = VirtualAnswer(many=True)
-        return answer_schema.dump(search)
+        answer_schema = AnswerSchema(many=True)
+        return answer_schema.dump(search_full)
     else:
         abort(404, f'Answer not found for ID: {keyword}')
+
+print(search_answer_fts('ASIA'))

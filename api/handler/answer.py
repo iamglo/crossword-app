@@ -11,10 +11,14 @@ from flask import (
     request
 )
 
+from database.config import db
+
 from models.models import (
     Answer,
     AnswerSchema,
-    Clue
+    Clue,
+    VirtualAnswer,
+    VirtualAnswerSchema
 )
 
 def read_all():
@@ -46,6 +50,17 @@ def search_answer(keyword):
 
     if search is not None:
         answer_schema = AnswerSchema(many=True)
+        return answer_schema.dump(search)
+    else:
+        abort(404, f'Answer not found for ID: {keyword}')
+
+def search_answer_fts(keyword):
+    """"""
+    search_parse = 'answer: *' + " ".join(keyword.split("+")) + "*"
+    search = db.engine.execute("SELECT * FROM v_answers WHERE v_answers MATCH ?", (search_parse,)).fetchall()
+
+    if search is not None:
+        answer_schema = VirtualAnswer(many=True)
         return answer_schema.dump(search)
     else:
         abort(404, f'Answer not found for ID: {keyword}')

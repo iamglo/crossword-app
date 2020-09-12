@@ -12,11 +12,14 @@ from flask import (
     request
 )
 
+from database.config import db
+
 from models.models import (
     Clue,
     ClueSchema,
+    VirtualClue,
+    VirtualClueSchema
 )
-
 
 def read_all():
     """
@@ -36,21 +39,16 @@ def read_all():
     clue_schema = ClueSchema(many=True)
     return clue_schema.dump(clue)
 
-
 def read():
     """
     Request response for /api/clue
     Parses for date, year, day via query parameter
     :return: json of answers
     """
-    # id_filt = [int(x) for x in request.args.getlist("id")]
     date_filt = request.args.get("date")
     year_filt = request.args.get("year")
     day_filt = request.args.get("day")
 
-    # if len(id_filt) > 0:
-    #     clue = Clue.query.filter(Clue.clue_id.in_(id_filt))
-    # else:
     clue = Clue.query
 
     if date_filt:
@@ -82,3 +80,22 @@ def search_clue(keyword):
         return clue_schema.dump(search.all())
     else:
         abort(404, f'Answer not found for ID: {keyword}')
+
+def search_clue_fts(keyword):
+    """"""
+    search_parse = 'clue: *' + " ".join(keyword.split("+")) + "*"
+    # search = db.engine.execute("SELECT * FROM v_clues WHERE v_clues MATCH ?", (search_parse,))
+    # search_full = Clue.query.filter(exists().where(Clue.clue_id == search.id)
+    search = db.session.query(VirtualClue.clue_id).filter(VirtualClue.clue.match(search_parse)).subquery()
+    # print(search)
+    search_full = Clue.query.filter(Clue.clue_id.in_(search)).all()
+    # print(search_full)
+    if search is not None:
+        clue_schema = ClueSchema(many=True)
+        return clue_schema.dump(search_full)
+    else:
+        abort(404, f'Answer not found for ID: {keyword}')
+
+
+print(search_clue_fts('bit'))
+

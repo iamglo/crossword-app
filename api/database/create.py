@@ -24,6 +24,20 @@ source text NOT NULL,
 day_of_week text NOT NULL
 );"""
 
+vsql_create_answers = """CREATE VIRTUAL TABLE IF NOT EXISTS v_answers USING fts4(
+content="answers", 
+answer_id,
+answer
+);"""
+
+vsql_create_clues_table = """CREATE VIRTUAL TABLE IF NOT EXISTS v_clues USING fts4(
+content="clues", 
+clue_id,
+clue,
+date
+);"""
+
+
 
 db_file = r"cw_data_test.db" #s.DB_PATH
 data = r"C:\Users\gmao3\PycharmProjects\crossword_app\scraper_data\merged_cw_data.csv" #s.RAW_DATA_PATH
@@ -38,3 +52,6 @@ cw_data = cw_data.iloc[:200, 2:]
 cw_data = cw_data[~cw_data['answer'].isna()]
 
 dbop.insert_to_db(conn, cw_data)
+
+dbop.create_table(conn, vsql_create_answers)
+dbop.create_table(conn, vsql_create_clues_table)

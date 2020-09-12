@@ -12,6 +12,39 @@ basePath: "/api"
 
 # Paths supported by the server application
 paths:
+  /clue/all:
+    get:
+      operationId: "handler.clue.read_all"
+      tags:
+        - "Clue"
+      summary: "The crossword answer data structure supported by the server application"
+      description: "Read the list of crossword clues"
+      parameters:
+        - in: query
+          name: size
+          description: Id of the person to get
+          required: False
+          type: string
+        - in: query
+          name: page
+          description: Date
+          type: string
+          required: False
+      responses:
+        200:
+          description: "Successful read clue list operation"
+          schema:
+            type: "array"
+            items:
+              properties:
+                clue:
+                  type: "string"
+                date:
+                  type: "string"
+                source:
+                  type: "string"
+                answer:
+                  type: array
   /clue:
     get:
       operationId: "handler.clue.read"
@@ -53,7 +86,7 @@ paths:
                   type: array
   /clue/search/{keyword}:
       get:
-        operationId: "handler.clue.search_clue"
+        operationId: "handler.clue.search_clue_fts"
         tags:
           - "Clue Search"
         summary: "The crossword answer data structure supported by the server application"

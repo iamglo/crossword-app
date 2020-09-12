@@ -67,3 +67,27 @@ class ClueSchema(ma.SQLAlchemyAutoSchema):
         sqla_session = db.session
 
     answer = fields.Nested('ClueAnswerSchema', default=[], many=True)
+
+class VirtualClue(db.Model):
+    __tablename__ = 'v_clues'
+    clue_id = db.Column(db.Integer, primary_key=True)
+    clue = db.Column(db.String(32))
+    # date = db.Column(db.String(32))
+    # source = db.Column(db.String(32))
+    # day_of_week = db.Column(db.String(32))
+
+class VirtualAnswer(db.Model):
+    __tablename__ = 'v_answers'
+    answer_id = db.Column(db.Integer, primary_key=True)
+    answer = db.Column(db.String(32))
+
+#
+class VirtualAnswerSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = VirtualAnswer
+        sqla_session = db.session
+
+class VirtualClueSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = VirtualClue
+        sqla_session = db.session
